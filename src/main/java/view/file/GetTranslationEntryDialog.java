@@ -50,7 +50,7 @@ public class GetTranslationEntryDialog extends EntryDialog {
      */
     @Override
     protected void addTextFields() {
-
+        System.out.println("hello");
         for (int i = 0; i < myColumnHeaders.size(); i++) {
 
             String header = myColumnHeaders.get(i);
