@@ -134,23 +134,12 @@ public class FileCntrl {
 
                     if (displayPanel instanceof DelimitedPanel) {
 
-                        if (tabPanel.getPlainTextModel().getAbsolutePath().endsWith("get_translation_details.cdf")) {
-
-                            editMenuItem.addActionListener(new AbstractAction() {
-                                @Override
-                                public void actionPerformed(ActionEvent actionEvent) {
-                                    getGetTranslationEntryDialog(tabPanel, currentLine).displayDialog();
-                                }
-                            });
-
-                        } else {
-                            editMenuItem.addActionListener(new AbstractAction() {
-                                @Override
-                                public void actionPerformed(ActionEvent actionEvent) {
-                                    getDelimitedEntryDialog(tabPanel, currentLine).displayDialog();
-                                }
-                            });
-                        }
+                        editMenuItem.addActionListener(new AbstractAction() {
+                            @Override
+                            public void actionPerformed(ActionEvent actionEvent) {
+                                getDelimitedEntryDialog(tabPanel, currentLine).displayDialog();
+                            }
+                        });
 
                     } else if (displayPanel instanceof PositionalPanel) {
 
@@ -551,56 +540,6 @@ public class FileCntrl {
      * @param currentLine
      * @return
      */
-    private GetTranslationEntryDialog getGetTranslationEntryDialog(final TabPanel tabPanel, int currentLine) {
-
-        final JTextArea jTextArea = tabPanel.getTextArea();
-
-        final GetTranslationEntryDialog getTranslationEntryDialog = new GetTranslationEntryDialog(
-                getRowAsList(tabPanel, jTextArea, 0),
-                getRowAsList(tabPanel, jTextArea, currentLine),
-                myApp.getPropsControl().getMyAppProperties()
-        );
-
-        getTranslationEntryDialog.configGenericButton("Add Generic Service", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                getTranslationEntryDialog.addServiceTextFields(true);
-                getTranslationEntryDialog.pack();
-            }
-        });
-        getTranslationEntryDialog.configCustomButton("Add Custom Service", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                getTranslationEntryDialog.addServiceTextFields(false);
-                getTranslationEntryDialog.pack();
-            }
-        });
-        getTranslationEntryDialog.configCopyButton("Copy Entry", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                StringSelection stringSelection = new StringSelection(getTranslationEntryDialog.getResultText());
-                Toolkit.getDefaultToolkit().getSystemClipboard().setContents(stringSelection, null);
-            }
-        });
-        getTranslationEntryDialog.configWriteButton("Write Entry to File", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent actionEvent) {
-                try {
-                    int lineStart = jTextArea.getLineStartOffset(currentLine);
-                    int lineEnd = jTextArea.getLineEndOffset(currentLine);
-                    jTextArea.replaceRange(getTranslationEntryDialog.getResultText() + System.lineSeparator(), lineStart, lineEnd);
-                    getTranslationEntryDialog.dispose();
-                    jTextArea.setCaretPosition(lineStart);
-
-                } catch (BadLocationException e) {
-                    e.printStackTrace();
-                }
-            }
-        });
-
-        return getTranslationEntryDialog;
-    }
-
     private PositionalEntryDialog getPositionalEntryDialog(final TabPanel tabPanel, int currentLine) {
 
         final PositionalPanel positionalPanel = (PositionalPanel) tabPanel.getDisplayPanel();
